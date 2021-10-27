@@ -1,0 +1,38 @@
+.category-selector {
+  column-gap: 48px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.fileupload {
+  column-gap: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.ouput {
+  border: 1px solid;
+  min-width: 600px;
+  min-height: 200px;
+  display: flex;
+  flex-wrap: wrap;
+  border-radius: 6px;
+}
+
+.required::after{
+  content: "*";
+  color: red;
+}
+
+.response {
+    margin-top: 18px;
+}
+
+.file {
+    border: 1px solid;
+    border-radius: 5px;
+}

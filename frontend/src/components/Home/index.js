@@ -50,7 +50,7 @@ function Home() {
             path = '/nsfwDetector'
         }
 
-        fetch(`http://localhost:8080/api${path}`, requestOptions)
+        fetch(`http://34.204.6.188/api${path}`, requestOptions)
           .then(response => response.json())
           .then(result => {
               if(result.status) {

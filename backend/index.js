@@ -36,9 +36,11 @@ app.use(cors());
  * Routes
  */
 app.use("/api", router);
-
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
+app.get('/', (req, res) => {
+    res.status(200).json({ message: 'Toonified server is up!! '})
+})
 /**
  * throw 404 if URL not found
  * */

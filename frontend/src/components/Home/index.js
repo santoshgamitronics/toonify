@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
-import ReactJson from 'react-json-view';
 import HighlightOffRoundedIcon from '@mui/icons-material/HighlightOffRounded';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 import './home.scss';
 
@@ -11,6 +12,7 @@ function Home() {
     const [category, setCategory] = useState("");
     const [file, setFile] = useState(null);
     const [response, setResponse] = useState({});
+    const [submitted, setSubmitted] = useState(false);
 
     const handleFileInput = (event) => {
         setFile(event.target.files[0]);
@@ -24,6 +26,7 @@ function Home() {
     };
 
     const selectCategory = () => {
+        setResponse({});
         const selectedCategory = document.getElementById("category").value;
         if (selectedCategory.length > 0) {
             setCategory(selectedCategory);
@@ -32,34 +35,67 @@ function Home() {
         }
     };
 
+    const getReponseForEachCategory = () => {
+        if (response.status) {
+            if (category === 'toonify_image' && response.data) {
+                return <img src={response.data.output_url} alt="toonified" width="230px" style={{ padding: '10px' }}/>
+            } else if (category === 'nsfw_detector' && response.data) {
+                return getNsfwDetectedResult();
+            } else {
+                return 'No content found';
+            }
+        } else {
+            if (response.status === 0 && category !== '') {
+                return 'Issue while fetching the content, please refresh the page & try again...';
+            } else {
+                return 'Response viewer';
+            }
+        }
+    }
+
     const handleSubmit = (e) => {
-        e.preventDefault();
-    
+
         const formdata = new FormData();
         formdata.append("image", file);
-        
+        setSubmitted(current => current = true);
+
         const requestOptions = {
-          method: 'POST',
-          body: formdata,
-          redirect: 'follow'
+            method: 'POST',
+            body: formdata,
+            redirect: 'follow'
         };
         let path = '';
-        if(category === 'toonify_image') {
+        if (category === 'toonify_image') {
             path = '/toonifyImage'
         } else {
             path = '/nsfwDetector'
         }
 
         fetch(`https://toonify.partypalace-stage.in/api${path}`, requestOptions)
-          .then(response => response.json())
-          .then(result => {
-              if(result.status) {
-                setResponse(result);
-              } else {
-                setResponse({ message: result.message.message, status: result.status })
-              }
-          })
-          .catch(error => console.log('error', error));
+            .then(response => response.json())
+            .then(result => {
+                setSubmitted(false);
+                if (result.status) {
+                    setResponse(result);
+                } else {
+                    setResponse({ message: result.message.message, status: result.status })
+                }
+            })
+            .catch(error => { setSubmitted(false); console.log('error', error) });
+    }
+
+    const getNsfwDetectedResult = () => {
+        if (response.data.output.detections.length > 0) {
+            return (<p className="nsfwContent">
+                <strong>{'NSFW content found.'}</strong>
+                <span style={{ padding: '25px' }}>
+                    <label style={{ fontWeight: '600' }}>{'Response Json:'}</label>
+                    {JSON.stringify(response.data.output)}
+                </span>
+            </p>)
+        } else {
+            return 'No NSFW content found.'
+        }
     }
 
     return (
@@ -76,8 +112,9 @@ function Home() {
                         direction="row"
                         spacing={2}
                         justifyContent="center"
+                        marginBottom="20px"
                     >
-                        <form onSubmit={(e) => handleSubmit(e)}>
+                        <form onSubmit={(e) => { e.preventDefault(); handleSubmit(e) }}>
                             <div className="fileupload">
                                 <label className="required">{'Please upload an image'}</label>
                                 <input
@@ -114,9 +151,10 @@ function Home() {
                         </form>
                     </Stack>
                     <div className="response">
-                        <label>Response from API</label>
-                        <div className="ouput">
-                            <ReactJson src={response} theme="monokai" style={{ width: '650px' }} />
+                        <div className="output">
+                            {submitted ? <Box sx={{ display: 'flex' }}>
+                                <CircularProgress />
+                            </Box> : getReponseForEachCategory()}
                         </div>
                     </div>
                 </Grid>

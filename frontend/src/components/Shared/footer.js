@@ -8,7 +8,7 @@ function Copyright(props) {
         <Typography 
         variant="body2" 
         fontWeight="600"
-        style={{ marginTop: '16px' }}
+        style={{ margin: '20px' }}
         align="center" 
         {...props}>
             {'Copyright © '}
@@ -29,9 +29,9 @@ const Footer = (props) => {
             borderTop: (theme) => `1px solid ${theme.palette.divider}`
         }}
         style={{
-            marginTop: '26px',
+            position: 'absolute',
             bottom: '0px',
-            maxWidth: 'none'
+            maxWidth: 'none',
         }}
     >
         <Copyright sx={{ mt: 5 }} />

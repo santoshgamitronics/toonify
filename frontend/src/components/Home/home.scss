@@ -14,13 +14,17 @@
   margin-bottom: 18px;
 }
 
-.ouput {
+.output {
   border: 1px solid;
-  min-width: 600px;
-  min-height: 200px;
+  width: 600px;
+  height: 250px;
   display: flex;
   flex-wrap: wrap;
   border-radius: 6px;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .required::after{
@@ -28,11 +32,13 @@
   color: red;
 }
 
-.response {
-    margin-top: 18px;
-}
-
 .file {
     border: 1px solid;
     border-radius: 5px;
+}
+
+.nsfwContent {
+  display: flex;
+    align-items: center;
+    flex-direction: column;
 }

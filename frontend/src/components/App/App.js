@@ -17,7 +17,7 @@ function App() {
       {/* Hero unit */}
       <Container disableGutters maxWidth="sm" component="main" sx={{ pt: 8, pb: 6 }}>
         <Typography variant="h5" align="center" color="text.secondary" component="p" style={{ fontWeight: "normal", color: "black" }}>
-          Quickly build a cartoonist character from an real image and detect not safe for work(NSFW) images using DeepAI api's.
+          Quickly build a cartoonist character from an real image and detect not safe for work(NSFW) images.
         </Typography>
       </Container>
       {/* End hero unit */}
